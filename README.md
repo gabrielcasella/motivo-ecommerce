@@ -18,6 +18,10 @@ In the database there is a list of products and a list of attributes. The attrib
 with them so their type can be assigned dynamically. In order to store those attributes there is a separate table for each value
 type (int, decimal, varchar, text, datetime). Those tables hold the relationship between products and attributes.
 
+The ER diagram can be seen below:
+
+![ER Diagram](https://github.com/gabrielcasella/motivo-ecommerce/blob/master/DatabaseSchema.png)
+
 There are methods exposed by the api that allow the creation of products and attributes, updating them, as well as fetching and
 deleting them.
 
@@ -108,11 +112,30 @@ hostname: homestead
 - Bring Vagrant up
 ```
 vagrant up
+vagrant ssh
 ```
 - Clone the project in the ecommerce folder created before:
 ```
+cd ~/ecommerce
 get clone https://github.com/gabrielcasella/motivo-ecommerce.git
+wget https://getcomposer.org/composer.phar
+php composer.phar
+php composer.phar install
+php artisan key:generate
+php artisan migrate --seed
+vi .env
 ```
+- MySQL should be running thanks to homestead, just be sure to create a database and configure .env accordingly
+```
+php artisan key:generate
+php artisan migrate --seed
+```
+- Now Laravel should be running at homestead.test
+- To test:
+```
+phpunit
+```
+
 
 ## Additions
 
@@ -124,4 +147,15 @@ with it, that means we can easily visualise how many shirts size M are in the sy
 
 ## Future changes
 
+Given more time there are critical changes I would like to implement:
+- Security around the endpoints with access key tokens and throttling.
+- Add API endpoints for product attributes so they can be managed on their own.
+- Add traceability and visibility for requests so it is easy to debug in case an error happens.
+- Make smart attribute management from the product requests so the attributes are created or deleted
+automatically if needed.
+- Establish a CI/CD workflow so changes are deployed nicely.
+
 ## Additional comments
+
+I had fun learning Laravel for this project, it is a really nice framework and I could jump
+into it fast as it is similar to cakePHP.
